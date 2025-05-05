@@ -5,6 +5,7 @@ import com.expenses.expensetracker.Exceptions.EtResourceNotFoundException;
 import com.expenses.expensetracker.domain.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,11 @@ public class TransactionRepository implements TransactionRepositoryInterface
             "FROM ET_TRANSACTIONS " +
             "WHERE USER_ID = ? AND CATEGORY_ID = ? AND TRANSACTION_ID = ?";
 
+    private final String SQL_UPDATE =
+            "UPDATE ET_TRANSACTIONS " +
+            "SET CATEGORY = ?, AMOUNT = ?, NOTE = ?, TRANSACTION_DATE = ? " +
+            "WHERE USER_ID = ?, CATEGORY_ID = ?, TRANSACTION_ID = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -43,7 +49,15 @@ public class TransactionRepository implements TransactionRepositoryInterface
 
     @Override
     public Transaction findTransaction(Integer userID, Integer categoryID, Integer transactionID) throws EtResourceNotFoundException {
-        return null;
+        try
+        {
+            return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{userID, categoryID}, transactionRowMapper);
+
+        }catch (Exception e)
+        {
+            throw new EtResourceNotFoundException("Transaction not found");
+        }
+
     }
 
     @Override
@@ -57,7 +71,7 @@ public class TransactionRepository implements TransactionRepositoryInterface
                 PreparedStatement ps = con.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, categoryID);
                 ps.setInt(2, userID);
-                ps.setInt(3, amount);
+                ps.setDouble(3, amount);
                 ps.setString(4, note);
                 ps.setLong(5, transactionDate);
                 return ps;
@@ -80,4 +94,14 @@ public class TransactionRepository implements TransactionRepositoryInterface
     public void removeByID(Integer userID, Integer categoryID, Integer transactionID, Transaction transaction) throws EtResourceNotFoundException {
 
     }
+
+    private final RowMapper<Transaction> transactionRowMapper = ((rs, rowNum)->{
+        return new Transaction(
+                rs.getInt("TRANSACTION_ID"),
+                rs.getInt("CATEGORY_ID"),
+                rs.getInt("USER_ID"),
+                rs.getDouble("AMOUNT"),
+                rs.getString("NOTE"),
+                rs.getLong("TRANSACTION_DATE"));
+    });
 }
