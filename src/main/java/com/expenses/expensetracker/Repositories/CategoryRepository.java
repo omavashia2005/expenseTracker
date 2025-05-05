@@ -1,7 +1,7 @@
 package com.expenses.expensetracker.Repositories;
 
-import com.expenses.expensetracker.Exceptions.EtBadCategoryRequestException;
-import com.expenses.expensetracker.Exceptions.EtCategoryNotFoundException;
+import com.expenses.expensetracker.Exceptions.EtBadRequestException;
+import com.expenses.expensetracker.Exceptions.EtResourceNotFoundException;
 import com.expenses.expensetracker.domain.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
@@ -84,32 +83,32 @@ public class CategoryRepository implements CategoryRepositoryInterface
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Category> findAll(Integer userID) throws EtCategoryNotFoundException {
+    public List<Category> findAll(Integer userID) throws EtResourceNotFoundException {
 
         try
         {
             return jdbcTemplate.query(SQL_FIND_ALL_WITH_ID, new Object[]{userID}, categoryRowMapper);
         }catch (Exception e)
         {
-            throw new EtCategoryNotFoundException("Category empty");
+            throw new EtResourceNotFoundException("Category empty");
         }
 
     }
 
     @Override
-    public Category findByID(Integer userID, Integer categoryID) throws EtCategoryNotFoundException {
+    public Category findByID(Integer userID, Integer categoryID) throws EtResourceNotFoundException {
         try
         {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{userID, categoryID}, categoryRowMapper);
 
         }catch (Exception e)
         {
-            throw new EtCategoryNotFoundException("Not found!");
+            throw new EtResourceNotFoundException("Not found!");
         }
     }
 
     @Override
-    public Integer create(Integer userId, String title, String description) throws EtBadCategoryRequestException {
+    public Integer create(Integer userId, String title, String description) throws EtBadRequestException {
         try
         {
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -125,18 +124,18 @@ public class CategoryRepository implements CategoryRepositoryInterface
 
         }catch (Exception e)
         {
-            throw new EtBadCategoryRequestException("Invalid request");
+            throw new EtBadRequestException("Invalid request");
         }
     }
 
     @Override
-    public void update(Integer userID, Integer categoryID, Category category) throws EtBadCategoryRequestException {
+    public void update(Integer userID, Integer categoryID, Category category) throws EtBadRequestException {
         try
         {
             jdbcTemplate.update(SQL_UPDATE, new Object[]{category.getTitle(), category.getDescription(), userID, categoryID});
         }catch (Exception e)
         {
-            throw new EtBadCategoryRequestException("Invalid Category Update Request");
+            throw new EtBadRequestException("Invalid Category Update Request");
         }
     }
 

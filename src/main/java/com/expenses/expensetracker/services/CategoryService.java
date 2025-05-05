@@ -1,7 +1,7 @@
 package com.expenses.expensetracker.services;
 
-import com.expenses.expensetracker.Exceptions.EtBadCategoryRequestException;
-import com.expenses.expensetracker.Exceptions.EtCategoryNotFoundException;
+import com.expenses.expensetracker.Exceptions.EtBadRequestException;
+import com.expenses.expensetracker.Exceptions.EtResourceNotFoundException;
 import com.expenses.expensetracker.Repositories.CategoryRepository;
 import com.expenses.expensetracker.domain.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +24,24 @@ public class CategoryService implements CategoryServiceInterface
     }
 
     @Override
-    public Category fetchCategoryByID(Integer userID, Integer categoryID) throws EtCategoryNotFoundException {
+    public Category fetchCategoryByID(Integer userID, Integer categoryID) throws EtResourceNotFoundException {
         return categoryRepository.findByID(userID, categoryID);
 
     }
 
     @Override
-    public Category addCategory(Integer userID, String title, String description) throws EtBadCategoryRequestException {
+    public Category addCategory(Integer userID, String title, String description) throws EtBadRequestException {
         int categoryID = categoryRepository.create(userID, title, description);
         return categoryRepository.findByID(userID, categoryID);
     }
 
     @Override
-    public void updateCategory(Integer userID, Integer categoryID, Category category) throws EtBadCategoryRequestException {
+    public void updateCategory(Integer userID, Integer categoryID, Category category) throws EtBadRequestException {
         categoryRepository.update(userID, categoryID, category);
     }
 
     @Override
-    public void removeCategoryWithAllTransactions(Integer userID, Integer categoryID) throws EtCategoryNotFoundException {
+    public void removeCategoryWithAllTransactions(Integer userID, Integer categoryID) throws EtResourceNotFoundException {
 
     }
 }
