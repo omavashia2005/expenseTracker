@@ -1,0 +1,11 @@
+package com.expenses.expensetracker.Exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class EtCategoryNotFoundException extends RuntimeException {
+    public EtCategoryNotFoundException(String message) {
+        super(message);
+    }
+}
