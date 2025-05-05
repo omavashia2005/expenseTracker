@@ -52,7 +52,7 @@ src/
 ## 📦 Setup Instructions
 
 1. **Clone the repo**  
-   `git clone https://github.com/your-username/secure-auth-system.git`
+   `git clone https://github.com/your-username/expenseTracker.git`
 
 2. **Configure database** in `application.properties` - set all necessary environment variables
 
