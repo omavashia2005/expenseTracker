@@ -3,7 +3,7 @@ drop user ${JDBC_DATABASE_USERNAME};
 
 CREATE user ${JDBC_DATABASE_USERNAME} WITH password ${JDBC_PASSWORD} ;
 
-CREATE database expenseDB with template=template0 owner=expensetracker;
+CREATE database expenseDB with template=template0 owner=${JDBC_DATABASE_USERNAME};
 
 \connect expensedb;
 
