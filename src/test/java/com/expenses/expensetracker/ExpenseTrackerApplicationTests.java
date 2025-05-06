@@ -4,12 +4,15 @@ import com.expenses.expensetracker.Repositories.CategoryRepository;
 import com.expenses.expensetracker.Repositories.TransactionRepository;
 import com.expenses.expensetracker.Repositories.UserRepository;
 import com.expenses.expensetracker.domain.Category;
+import com.expenses.expensetracker.domain.Transaction;
 import com.expenses.expensetracker.domain.User;
 import com.expenses.expensetracker.services.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import java.util.List;
 
 
 @SpringBootTest
@@ -70,7 +73,7 @@ class ExpenseTrackerApplicationTests {
 	void TestTransactionRepository()
 	{
 		Long l = Long.valueOf("1577817000000");
-		int transactionID = transactionRepository.create(35, 35, 500.00, "checker", l);
+		List<Transaction> transactionID = transactionRepository.findAll(35, 35);
 
 		System.out.println(transactionID);
 	}

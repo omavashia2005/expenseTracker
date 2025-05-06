@@ -44,7 +44,8 @@ public class TransactionRepository implements TransactionRepositoryInterface
 
     @Override
     public List<Transaction> findAll(Integer userID, Integer categoryID) {
-        return List.of();
+        return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{userID, categoryID}, transactionRowMapper);
+
     }
 
     @Override
@@ -55,7 +56,7 @@ public class TransactionRepository implements TransactionRepositoryInterface
 
         }catch (Exception e)
         {
-            throw e;
+            throw new EtResourceNotFoundException("No such transaction!");
         }
 
     }
