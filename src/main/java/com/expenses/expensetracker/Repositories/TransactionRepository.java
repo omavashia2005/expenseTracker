@@ -18,26 +18,26 @@ import java.util.List;
 public class TransactionRepository implements TransactionRepositoryInterface
 {
 
-    private final String SQL_CREATE =
+    private static final String SQL_CREATE =
             "INSERT INTO ET_TRANSACTIONS (TRANSACTION_ID, CATEGORY_ID, USER_ID, AMOUNT, NOTE, TRANSACTION_DATE) " +
             "VALUES(NEXTVAL('ET_TRANSACTIONS_SEQ'), ?, ?, ?, ?, ?)";
 
-    private final String SQL_FIND_ALL =
+    private static final String SQL_FIND_ALL =
             "SELECT " +
             "TRANSACTION_ID, CATEGORY_ID, USER_ID, AMOUNT, NOTE, TRANSACTION_DATE " +
             "FROM ET_TRANSACTIONS " +
             "WHERE USER_ID = ? AND CATEGORY_ID = ?";
 
-    private final String SQL_FIND_BY_ID =
+    private static  final String SQL_FIND_BY_ID =
             "SELECT " +
             "TRANSACTION_ID, CATEGORY_ID, USER_ID, AMOUNT, NOTE, TRANSACTION_DATE " +
             "FROM ET_TRANSACTIONS " +
             "WHERE USER_ID = ? AND CATEGORY_ID = ? AND TRANSACTION_ID = ?";
 
-    private final String SQL_UPDATE =
+    private static final String SQL_UPDATE =
             "UPDATE ET_TRANSACTIONS " +
-            "SET CATEGORY = ?, AMOUNT = ?, NOTE = ?, TRANSACTION_DATE = ? " +
-            "WHERE USER_ID = ?, CATEGORY_ID = ?, TRANSACTION_ID = ?";
+            "SET  AMOUNT = ?, NOTE = ?, TRANSACTION_DATE = ? " +
+            "WHERE USER_ID = ? AND CATEGORY_ID = ? AND TRANSACTION_ID = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -51,18 +51,17 @@ public class TransactionRepository implements TransactionRepositoryInterface
     public Transaction findTransaction(Integer userID, Integer categoryID, Integer transactionID) throws EtResourceNotFoundException {
         try
         {
-            return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{userID, categoryID}, transactionRowMapper);
+            return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{userID, categoryID, transactionID}, transactionRowMapper);
 
         }catch (Exception e)
         {
-            throw new EtResourceNotFoundException("Transaction not found");
+            throw e;
         }
 
     }
 
     @Override
     public Integer create(Integer userID, Integer categoryID, Double amount, String note, Long transactionDate) throws EtBadRequestException {
-
         try
         {
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -79,15 +78,20 @@ public class TransactionRepository implements TransactionRepositoryInterface
             return (Integer) keyHolder.getKeys().get("TRANSACTION_ID");
         }catch (Exception e)
         {
-            throw new EtBadRequestException("Failure to record transaction");
+            throw e;
         }
-
-        return 0;
     }
 
     @Override
-    public void update(Integer userID, Integer categoryID, Integer transactionID, Transaction transaction) throws EtBadRequestException {
-
+    public void update(Integer userID, Integer categoryID, Integer transactionID, Transaction transaction) throws EtBadRequestException
+    {
+        try
+        {
+            jdbcTemplate.update(SQL_UPDATE, new Object[]{transaction.getAmount(), transaction.getNote(), transaction.getTransactionDate(),
+                                                        userID, categoryID, transactionID });
+        }catch (Exception e){
+            throw new EtBadRequestException("Update unsuccessful");
+        }
     }
 
     @Override
@@ -95,6 +99,10 @@ public class TransactionRepository implements TransactionRepositoryInterface
 
     }
 
+    /*
+        A Row Mapper object in Spring Boot is an interface implementation that maps rows from a database result set to Java objects.
+        It's part of Spring's JDBC abstraction layer and is used with the JdbcTemplate class to convert database query results into domain objects.
+    */
     private final RowMapper<Transaction> transactionRowMapper = ((rs, rowNum)->{
         return new Transaction(
                 rs.getInt("TRANSACTION_ID"),
