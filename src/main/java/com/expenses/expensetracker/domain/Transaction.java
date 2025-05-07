@@ -2,15 +2,15 @@ package com.expenses.expensetracker.domain;
 
 public class Transaction
 {
-    private Integer trasactionID;
+    private Integer transactionID;
     private Integer categoryID;
     private Integer userID;
     private Double amount;
     private String note;
     private Long transactionDate;
 
-    public Transaction(Integer trasactionID, Integer categoryID, Integer userID, Double amount, String note, Long transactionDate) {
-        this.trasactionID = trasactionID;
+    public Transaction(Integer transactionID, Integer categoryID, Integer userID, Double amount, String note, Long transactionDate) {
+        this.transactionID = transactionID;
         this.categoryID = categoryID;
         this.userID = userID;
         this.amount = amount;
@@ -18,12 +18,12 @@ public class Transaction
         this.transactionDate = transactionDate;
     }
 
-    public Integer getTrasactionID() {
-        return trasactionID;
+    public Integer getTransactionID() {
+        return transactionID;
     }
 
-    public void setTrasactionID(Integer trasactionID) {
-        this.trasactionID = trasactionID;
+    public void setTransactionID(Integer transactionID) {
+        this.transactionID = transactionID;
     }
 
     public Integer getCategoryID() {

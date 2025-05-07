@@ -23,10 +23,9 @@ else:
         if st.button("Submit"):
             res = requests.post(BASE_URL, json=payload, headers=headers)
             if res.status_code == 201:
-                st.write("CategoryID: ", str(res.json()["categoryID"]))
-                st.write("userID: ", str(res.json()["userID"]))
-                st.write("Title: ", str(res.json()["title"]))
-                st.write("Description: ", str(res.json()["description"]))
+                st.dataframe(res.json())
+                st.session_state["CategoryID"] = res.json()["categoryID"]
+                st.page_link(page="pages/Transactions.py", label="Add Expense?")
             else:
                 error_data = res.json()
                 st.error(f"{error_data.get('message')}")
@@ -65,6 +64,11 @@ else:
             res = requests.put(BASE_URL + "/" + catID, headers=headers, json=payload)
             if res.status_code == 200:
                 if res.json()["success"]:  st.write("Update Successful")
+                st.session_state["CategoryID"] = catID
+                st.page_link(page="pages/Transactions.py", label="Update Expense?")
             else:
                 error_data = res.json()
                 st.error(f"{error_data.get('message')}")
+
+st.page_link(page="pages/Transactions.py", label="Transactions")
+st.page_link(page="Homepage.py", label="Login/Register")
