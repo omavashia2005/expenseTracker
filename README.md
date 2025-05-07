@@ -45,7 +45,9 @@ src/
 │   │       ├── filters/
 │   │       └── exceptions/
 │   └── resources/
-│       └── register_and_login.py
+│       └── pages/
+│           └── Categories.py
+│       └── Homepage.py
 │       └── application.properties
 └── test/
 ```
