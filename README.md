@@ -47,6 +47,7 @@ src/
 │   └── resources/
 │       └── pages/
 │           └── Categories.py
+│           └── Transactions.py
 │       └── Homepage.py
 │       └── application.properties
 └── test/
