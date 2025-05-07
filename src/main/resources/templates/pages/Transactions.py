@@ -51,6 +51,10 @@ try:
                         df = pd.DataFrame(res.json())
                         df['transactionDate'] = pd.to_datetime(df["transactionDate"], unit='ms').dt.strftime("%m/%d/%Y")
                         st.dataframe(df)
+                        total = sum(item['amount'] for item in res.json())
+                        st.subheader(f"Total Transaction Amount: ${total:,.2f}")
+
+
                 else:
                     error_data = res.json()
                     st.error(f"{error_data.get('message')}")
@@ -59,7 +63,7 @@ try:
 
             transactionID = st.text_input("Enter transaction ID")
             catID = st.text_input("Enter category ID")
-            if st.button(f"Find Transaction with ID"):
+            if st.button(f"Find"):
 
                 res = requests.get(f"{BASE_URL}/{catID}/transactions/{transactionID}", headers=headers)
                 if res.status_code == 302:
