@@ -18,8 +18,8 @@ public class TransactionService implements TransactionServiceInterface
     TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> fetchAllTransactions(Integer userID, Integer categoryID) {
-        return transactionRepository.findAll(userID, categoryID);
+    public List<Transaction> fetchAllTransactions(Integer userID) {
+        return transactionRepository.findAll(userID);
     }
 
     @Override

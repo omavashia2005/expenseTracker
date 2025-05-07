@@ -73,7 +73,7 @@ class ExpenseTrackerApplicationTests {
 	void TestTransactionRepository()
 	{
 		Long l = Long.valueOf("1577817000000");
-		List<Transaction> transactionID = transactionRepository.findAll(35, 35);
+		List<Transaction> transactionID = transactionRepository.findAll(35);
 
 		System.out.println(transactionID);
 	}

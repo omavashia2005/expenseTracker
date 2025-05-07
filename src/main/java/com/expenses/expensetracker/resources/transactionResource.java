@@ -13,23 +13,23 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/categories/{categoryID}/transactions")
+@RequestMapping("/api/categories")
 public class transactionResource
 {
     @Autowired
     TransactionService transactionService;
 
-    @GetMapping("")
-    public ResponseEntity<List<Transaction>> findAllTransactions(HttpServletRequest request,
-                                                                 @PathVariable("categoryID") Integer categoryID)
+    @GetMapping("/transactions")
+    public ResponseEntity<List<Transaction>> findAllTransactions(HttpServletRequest request)
+
     {
         int userID = (Integer) request.getAttribute("userId");
-        List<Transaction> allTransactions = transactionService.fetchAllTransactions(userID, categoryID);
+        List<Transaction> allTransactions = transactionService.fetchAllTransactions(userID);
         return new ResponseEntity<>(allTransactions, HttpStatus.FOUND);
     }
 
 
-    @GetMapping("/{transactionID}")
+    @GetMapping("/{categoryID}/transactions/{transactionID}")
     public ResponseEntity<Transaction> findTransactionByID(HttpServletRequest request,
                                                            @PathVariable("categoryID") Integer categoryID,
                                                            @PathVariable("transactionID") Integer transactionID)
@@ -40,7 +40,7 @@ public class transactionResource
         return new ResponseEntity<>(transaction, HttpStatus.FOUND);
     }
 
-    @PostMapping("")
+    @PostMapping("{categoryID}/transactions")
     public ResponseEntity<Transaction> addTransaction(HttpServletRequest request, @PathVariable Integer categoryID,
                                                       @RequestBody Map<String, Object> transactionMap){
         int userID = (Integer) request.getAttribute("userId");

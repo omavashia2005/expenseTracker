@@ -72,3 +72,8 @@ else:
 
 st.page_link(page="pages/Transactions.py", label="Transactions")
 st.page_link(page="Homepage.py", label="Login/Register")
+
+if st.button("Logout"):
+    st.session_state["AuthToken"] = None
+    st.success("Logged out successfully.")
+    st.switch_page("Homepage.py")

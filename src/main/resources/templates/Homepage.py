@@ -3,6 +3,8 @@ import requests
 
 BASE_URL = "http://localhost:8080/api/users"
 
+st.session_state["AuthToken"] = None
+
 st.title("Expense Tracker")
 
 # UI flow control

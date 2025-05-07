@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransactionServiceInterface
 {
-    List<Transaction> fetchAllTransactions(Integer userID, Integer categoryID);
+    List<Transaction> fetchAllTransactions(Integer userID);
     Transaction fetchTransactionByID(Integer userID, Integer categoryID, Integer transactionID) throws EtResourceNotFoundException;
     Transaction addTransactionByID(Integer userID, Integer categoryID, Double amount, String note, Long transactionDate) throws EtBadRequestException;
     void updateTransaction(Integer userID, Integer categoryID, Integer transactionID, Transaction transaction) throws EtBadRequestException;

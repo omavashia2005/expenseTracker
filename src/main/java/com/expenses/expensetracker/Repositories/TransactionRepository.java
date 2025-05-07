@@ -26,7 +26,7 @@ public class TransactionRepository implements TransactionRepositoryInterface
             "SELECT " +
             "TRANSACTION_ID, CATEGORY_ID, USER_ID, AMOUNT, NOTE, TRANSACTION_DATE " +
             "FROM ET_TRANSACTIONS " +
-            "WHERE USER_ID = ? AND CATEGORY_ID = ?";
+            "WHERE USER_ID = ?";
 
     private static  final String SQL_FIND_BY_ID =
             "SELECT " +
@@ -43,8 +43,8 @@ public class TransactionRepository implements TransactionRepositoryInterface
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Transaction> findAll(Integer userID, Integer categoryID) {
-        return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{userID, categoryID}, transactionRowMapper);
+    public List<Transaction> findAll(Integer userID) {
+        return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{userID}, transactionRowMapper);
 
     }
 
