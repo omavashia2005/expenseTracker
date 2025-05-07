@@ -27,7 +27,8 @@ if action == "Register":
         if res.status_code == 200:
             st.success("You are now registered!")
             st.session_state["AuthToken"] = res.json().get("token: ")
-            print(st.session_state["AuthToken"])
+            st.page_link(page="pages/Categories.py", label="Add categories")
+
         else:
             error_data = res.json()
             st.error(f"{error_data.get('message')}")
@@ -43,6 +44,7 @@ elif action == "Login":
         if res.status_code == 200:
             st.success("You are now logged in!")
             st.session_state["AuthToken"] = res.json().get("token")
+            st.page_link(page="pages/Categories.py", label="Add categories")
 
         else:
             error_data = res.json()
