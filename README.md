@@ -9,12 +9,11 @@ A secure and scalable authentication backend built with **Java Spring Boot**, fe
 
 <p align="left">
   <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" height="60"/>
+  <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" height="60"/>
   <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="60"/>
   <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" height="60"/>
   <img src="https://svgmix.com/uploads/44dd3e-jwt-icon.svg" height="60"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" height="60"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/ca28c779441053191ff11710fe24a9e6c23690d6/icons/streamlit/streamlit-original.svg" height="60"/>
-  <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" height="60"/>
 </p>
 
 
