@@ -36,3 +36,4 @@ mvnw
 mvnw.cmd
 .mvn
 src/main/java/com/expenses/expensetracker/services/Constants.java
+frontend.py
