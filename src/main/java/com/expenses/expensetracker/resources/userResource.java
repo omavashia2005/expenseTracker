@@ -79,7 +79,7 @@ public class userResource
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("message", "Login successful"));
+                .body(Map.of("message", "Account created!"));
 
 
     }
