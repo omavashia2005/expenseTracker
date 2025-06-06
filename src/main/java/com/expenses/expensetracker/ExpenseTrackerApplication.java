@@ -6,10 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.logging.Filter;
 
@@ -36,11 +34,20 @@ public class ExpenseTrackerApplication
 		FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("*");
+
+		corsConfiguration.addAllowedOrigin("http://localhost:3000"); // Allow frontend
 		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("GET");
+		corsConfiguration.addAllowedMethod("POST");
+		corsConfiguration.addAllowedMethod("PUT");
+		corsConfiguration.addAllowedMethod("DELETE");
+		corsConfiguration.addAllowedMethod("OPTIONS"); // Allow preflight
+		corsConfiguration.setAllowCredentials(true);
+
 		source.registerCorsConfiguration("/**", corsConfiguration);
 		registrationBean.setFilter(new CorsFilter(source));
-		registrationBean.setOrder(0);
+		registrationBean.setOrder(0); // Ensure CORS runs before other filters
+
 		return registrationBean;
 	}
 

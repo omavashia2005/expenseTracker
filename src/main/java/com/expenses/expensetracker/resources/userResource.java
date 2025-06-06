@@ -10,7 +10,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,21 @@ public class userResource
 
         User user = userService.validateUser(email, password);
 
-        return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
+        String token = generateJWTToken(user);
+
+        ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(2 * 60 * 60)
+                .sameSite("Lax")
+                .build();
+
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Map.of("message", "Login successful"));
     }
 
     @PostMapping("/register")
@@ -51,7 +67,21 @@ public class userResource
 
         User user = userService.registerUser(firstName, lastName, email, password);
 
-        return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
+        String token = generateJWTToken(user);
+
+        ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(2 * 60 * 60)
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Map.of("message", "Login successful"));
+
+
     }
 
     @GetMapping("/findByEmail")
@@ -72,10 +102,10 @@ public class userResource
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    private Map<String, String> generateJWTToken(User user){
+    private String generateJWTToken(User user){
         long timeTamp = System.currentTimeMillis();
 
-        String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
+        return Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
                 .setIssuedAt(new Date(timeTamp))
                 .setExpiration(new Date(timeTamp + Constants.TOKEN_VALIDITY))
                 .claim("userID", user.getUserId())
@@ -83,10 +113,5 @@ public class userResource
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
                 .compact();
-
-        Map<String, String> map = new HashMap<>();
-        map.put("token", token);
-
-        return map;
     }
 }
